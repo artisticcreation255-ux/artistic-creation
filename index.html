@@ -4,101 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-icons/6.0.0/css/all.min.css">
-    
     <style>
-        /* Reset & Base Styles */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; scroll-behavior: smooth; }
-        body { background-color: #0f172a; color: #f8fafc; }
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+        }
 
-        /* Navbar */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 25px 10%; position: fixed; width: 100%; top: 0; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); z-index: 100; }
-        .logo { font-size: 24px; font-weight: 700; letter-spacing: 1px; }
-        .logo span { color: #38bdf8; }
-        nav a { color: #94a3b8; text-decoration: none; margin-left: 30px; font-weight: 500; transition: color 0.3s; }
-        nav a:hover { color: #38bdf8; }
-        .btn-nav { background: #38bdf8; color: #0f172a !important; padding: 8px 20px; border-radius: 6px; text-decoration: none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-        /* Hero Section */
-        .hero { height: 100vh; display: flex; align-items: center; padding: 0 10%; background: radial-gradient(circle at 80% 20%, #1e293b 0%, #0f172a 100%); }
-        .hero-content h1 { font-size: 56px; margin-bottom: 20px; }
-        .highlight { color: #38bdf8; }
-        .hero-content p { font-size: 20px; color: #94a3b8; max-width: 600px; margin-bottom: 40px; line-height: 1.6; }
-        .btn-main { display: inline-block; background: transparent; color: #38bdf8; border: 2px solid #38bdf8; padding: 12px 30px; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 6px; transition: all 0.3s; }
-        .btn-main:hover { background: #38bdf8; color: #0f172a; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
 
-        /* Portfolio Section */
-        .portfolio-section { padding: 100px 10%; }
-        .portfolio-section h2 { font-size: 36px; margin-bottom: 50px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .card { background: #1e293b; border-radius: 12px; overflow: hidden; border: 1px solid #334155; transition: transform 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .card-img { height: 220px; background-size: cover; background-position: center; }
-        .card-body { padding: 25px; }
-        .card-body h3 { margin-bottom: 10px; font-size: 20px; color: #f8fafc; }
-        .card-body p { color: #94a3b8; font-size: 15px; line-height: 1.5; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-        /* Footer */
-        footer { background: #020617; padding: 60px 10%; text-align: center; border-top: 1px solid #1e293b; }
-        footer p { font-size: 22px; margin-bottom: 25px; }
-        .socials a { color: #94a3b8; text-decoration: none; margin: 0 15px; }
-        .copy { font-size: 14px; color: #475569; margin-top: 40px; }
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
 
-        @media (max-width: 768px) { header { padding: 20px 5%; } nav a { margin-left: 15px; font-size: 14px; } .hero-content h1 { font-size: 40px; } .portfolio-section { padding: 60px 5%; } }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        header p {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-color: #334155;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-body h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .card-body p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .loading, .error-msg {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .error-msg {
+            color: #ef4444;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">PORTFOLIO<span>.</span></div>
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#work">My Work</a>
-            <a href="#contact" class="btn-nav">Contact</a>
-        </nav>
-    </header>
+    <div class="container">
+        <header>
+            <h1>My Portfolio Projects</h1>
+            <p>Live updates from Google Sheets</p>
+        </header>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Hi, I'm <span class="highlight">Chathuranga</span></h1>
-            <p>Creative Designer & Digital Marketer specialized in high-fidelity visual production.</p>
-            <a href="#work" class="btn-main">View My Work</a>
-        </div>
-    </section>
-
-    <!-- Projects Grid -->
-    <section id="work" class="portfolio-section">
-        <h2>Selected Work</h2>
+        <!-- Google Sheet එකෙන් එන ප්‍රොජෙක්ට්ස් වැටෙන්නේ මෙතනට -->
         <div class="grid" id="sheet-projects">
-            <p>Loading your awesome work...</p>
+            <div class="loading">Loading amazing projects...</div>
         </div>
-    </section>
+    </div>
 
-    <footer id="contact">
-        <p>Let's collaborate on your next project.</p>
-        <div class="socials">
-            <a href="#">LinkedIn</a>
-            <a href="#">GitHub</a>
-            <a href="#">Behance</a>
-        </div>
-        <p class="copy">&copy; 2026 Portfolio. All rights reserved.</p>
-    </footer>
-
-    <!-- Google Sheet එකෙන් Live Data ඇදලා ගන්න JavaScript එක -->
+    <!-- Google Sheet එකෙන් 100% වැඩ කරන JSON ක්‍රමයට දත්ත ගන්නා JavaScript එක -->
     <script>
-        <!-- Google Sheet එකෙන් 100% වැඩ කරන JSON ක්‍රමයට දත්ත ගන්නා JavaScript එක -->
-    <script>
+        // ඔයාගේ Google Sheet ID එක මෙතනට සෙට් කරලා තියෙන්නේ
         const sheetId = '1fTLadWxaaJVlXYJTREH0eTQz0wzSP5InndZTlwb8Hf0'; 
-        // මේකෙන් දත්ත ගන්නේ JSON format එකෙන්, එතකොට කිසිම දත්තයක් පැටලෙන්නේ නැහැ
         const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
         async function fetchSheetData() {
             const grid = document.getElementById('sheet-projects');
             try {
                 const response = await fetch(base);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
                 const text = await response.text();
                 
-                // Google JSON වල මුලින් එන අනවශ්‍ය text කෑල්ල අයින් කරනවා
+                // Google JSON වල මුලින් එන අනවශ්‍ය text කෑල්ල (google.visualization.Query.setResponse...) අයින් කරනවා
                 const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
                 const json = JSON.parse(jsonString);
                 
@@ -106,16 +141,18 @@
                 grid.innerHTML = ''; // Loading text එක අයින් කරනවා
 
                 if (!rows || rows.length === 0) {
-                    grid.innerHTML = '<p>No projects found in your sheet. Add data to Row 2!</p>';
+                    grid.innerHTML = '<div class="loading">No projects found. Please add some data to your Sheet starting from Row 2!</div>';
                     return;
                 }
 
                 rows.forEach(row => {
-                    // ශීට් එකේ තියෙන Row එකේ දත්ත ගන්නවා (A=0, B=1, C=2)
+                    // ශීට් එකේ තියෙන Column වල දත්ත ගන්නවා (A=0, B=1, C=2)
                     const title = row.c[0] ? row.c[0].v : '';
                     const description = row.c[1] ? row.c[1].v : '';
+                    // රූපයක් නැත්නම් වැටෙන්න Default ප්ලේස්හෝල්ඩර් ඉමේජ් එකක් දාලා තියෙන්නේ
                     const image = row.c[2] ? row.c[2].v : 'https://images.unsplash.com/photo-1541462608141-ad4979e408c9?q=80&w=600';
 
+                    // Title එකක් තියෙනවා නම් විතරක් Card එකක් හදනවා
                     if (title) {
                         const card = document.createElement('div');
                         card.className = 'card';
@@ -130,13 +167,13 @@
                     }
                 });
             } catch (error) {
-                grid.innerHTML = '<p>Error loading projects. Make sure your Google Sheet has data starting from Row 2!</p>';
+                grid.innerHTML = '<div class="error-msg">Error loading projects. Please double-check your Sheet Share settings!</div>';
                 console.error("Error details:", error);
             }
         }
 
+        // පේජ් එක ලෝඩ් වෙද්දීම Function එක රන් කරනවා
         fetchSheetData();
-    </script>
     </script>
 </body>
 </html>
