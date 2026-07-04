@@ -1,1 +1,22 @@
+backend:
+  name: github
+  repo: ඔයාගේ_github_username/ඔයාගේ_repository_නම # <--- මෙතන ඔයාගේ විස්තර දාන්න (උදා: chathuranga/my-portfolio)
+  branch: main
 
+media_folder: "images" # Dashboard එකෙන් දාන ෆොටෝ සේව් වෙන්න ඕනේ තැන
+
+collections:
+  - name: "portfolio"
+    label: "My Projects"
+    files:
+      - file: "data.json"
+        label: "Projects List"
+        name: "projects_list"
+        fields:
+          - label: "Projects"
+            name: "projects"
+            widget: "list"
+            fields:
+              - {label: "Project Title", name: "title", widget: "string"}
+              - {label: "Description", name: "description", widget: "text"}
+              - {label: "Project Image", name: "image", widget: "image"}
