@@ -86,29 +86,37 @@
 
     <!-- Google Sheet එකෙන් Live Data ඇදලා ගන්න JavaScript එක -->
     <script>
-        // ⚠️ මෙතන තියෙන Text එක අයින් කරලා ඔයාගේ Google Sheet ID එක දාන්න!
+        <!-- Google Sheet එකෙන් 100% වැඩ කරන JSON ක්‍රමයට දත්ත ගන්නා JavaScript එක -->
+    <script>
         const sheetId = '1fTLadWxaaJVlXYJTREH0eTQz0wzSP5InndZTlwb8Hf0'; 
-        const base = `https://docs.google.com/spreadsheets/d/${sheetId}/pub?output=csv`;
+        // මේකෙන් දත්ත ගන්නේ JSON format එකෙන්, එතකොට කිසිම දත්තයක් පැටලෙන්නේ නැහැ
+        const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
         async function fetchSheetData() {
             const grid = document.getElementById('sheet-projects');
             try {
                 const response = await fetch(base);
-                const text = await response.json || await response.text();
+                const text = await response.text();
                 
-                // CSV Data ටික Array එකකට කඩාගැනීම
-                const rows = text.split('\n').slice(1); // First row (headers) එක අත අරිනවා
+                // Google JSON වල මුලින් එන අනවශ්‍ය text කෑල්ල අයින් කරනවා
+                const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+                const json = JSON.parse(jsonString);
+                
+                const rows = json.table.rows;
                 grid.innerHTML = ''; // Loading text එක අයින් කරනවා
 
-                rows.forEach(row => {
-                    // CSV වල එන Quotes අයින් කරලා කෝමා වලින් වෙන් කරගන්නවා
-                    const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(col => col.replace(/^"|"$/g, '').trim());
-                    
-                    if(columns[0]) { // Title එකක් තියෙනවා නම් විතරක් කාඩ් එක හදන්න
-                        const title = columns[0];
-                        const description = columns[1] || '';
-                        const image = columns[2] || 'https://images.unsplash.com/photo-1541462608141-ad4979e408c9?q=80&w=600';
+                if (!rows || rows.length === 0) {
+                    grid.innerHTML = '<p>No projects found in your sheet. Add data to Row 2!</p>';
+                    return;
+                }
 
+                rows.forEach(row => {
+                    // ශීට් එකේ තියෙන Row එකේ දත්ත ගන්නවා (A=0, B=1, C=2)
+                    const title = row.c[0] ? row.c[0].v : '';
+                    const description = row.c[1] ? row.c[1].v : '';
+                    const image = row.c[2] ? row.c[2].v : 'https://images.unsplash.com/photo-1541462608141-ad4979e408c9?q=80&w=600';
+
+                    if (title) {
                         const card = document.createElement('div');
                         card.className = 'card';
                         card.innerHTML = `
@@ -122,12 +130,13 @@
                     }
                 });
             } catch (error) {
-                grid.innerHTML = '<p>Error loading projects. Check your Sheet ID and Share settings!</p>';
-                console.error(error);
+                grid.innerHTML = '<p>Error loading projects. Make sure your Google Sheet has data starting from Row 2!</p>';
+                console.error("Error details:", error);
             }
         }
 
         fetchSheetData();
+    </script>
     </script>
 </body>
 </html>
